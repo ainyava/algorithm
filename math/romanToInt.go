@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"slices"
 )
 
 func romanToInt(s string) int {
@@ -15,35 +14,15 @@ func romanToInt(s string) int {
 		'D': 500,
 		'M': 1000,
 	}
-	decimals := make(map[int]int, 4)
-	for i := len(s) - 1; i >= 0; i-- {
-		if i > 0 {
-			if slices.Contains([]byte{'V', 'X'}, s[i]) && s[i-1] == 'I' {
-				decimals[0] += mappings[s[i]] - 1
-				i--
-				continue
-			} else if slices.Contains([]byte{'L', 'C'}, s[i]) && s[i-1] == 'X' {
-				decimals[1] += mappings[s[i]] - 10
-				i--
-				continue
-			} else if slices.Contains([]byte{'D', 'M'}, s[i]) && s[i-1] == 'C' {
-				decimals[1] += mappings[s[i]] - 100
-				i--
-				continue
-			}
-		}
-		n := mappings[s[i]]
-		if n < 10 {
-			decimals[0] += n
-		} else if n < 100 {
-			decimals[1] += n
-		} else if n < 1000 {
-			decimals[2] += n
-		} else if n < 10000 {
-			decimals[3] += n
+	res := 0
+	for i := range s {
+		if i < len(s)-1 && mappings[s[i]] < mappings[s[i+1]] {
+			res -= mappings[s[i]]
+		} else {
+			res += mappings[s[i]]
 		}
 	}
-	return decimals[3] + decimals[2] + decimals[1] + decimals[0]
+	return res
 }
 
 func main() {
