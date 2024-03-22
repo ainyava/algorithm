@@ -3,12 +3,11 @@ package main
 import "fmt"
 
 func isPowerOfThree(n int) bool {
-	for bases := 1; bases <= n; bases *= 3 {
-		if bases == n {
-			return true
-		}
+	if n < 1 {
+		return false
 	}
-	return false
+	// The maximum power of 3 value that integer can hold (3^19)
+	return 1162261467%n == 0
 }
 
 func main() {
